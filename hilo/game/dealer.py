@@ -62,8 +62,6 @@ class Dealer:
                 print("Thanks for playing!")
                 self.is_playing = False
             
-            else:
-                print('Please, type "y" or "n"')
         else:
             print("You lost all your points, game over.")
             self.is_playing = False
