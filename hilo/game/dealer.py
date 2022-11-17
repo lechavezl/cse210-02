@@ -1,41 +1,46 @@
 from game.card import Card
 
 class Dealer:
-    "The Dealer is the person that distributes the cards at the start of the game"
+    # The Dealer is the person that distributes the cards at the start of the game
 
-    #The responsibility of th Dealer is to control the game and calculate the points
-    #earned by the player
+    # The responsibility of th Dealer is to control the game and calculate the points
+    # earned by the player
 
     # Attributes =>
-    # dealer: A list of card instances
-    # points: The player's points at the start of the game
-    # total_points: The total player's points at the end of the game
-    # is_playing: A boolean that makes the game running until the players ends thhe game.
-    # guess: 
+    # points (int): The player's points at the start of the game
+    # is_playing (Boolean): A boolean that makes the game running until the players ends thhe game.
+    # card (Card): An instance of the class Card
+    # player_guess (str): An input that will ask for the player's guess
+    # play_again (str): An input that asks if the user wants to keep playing or not
 
     def __init__(self):
         # The constructor of the Dealer
 
-        # Args: self (Dealer): an instance of Dealer
+        # Args: self (Dealer): an instance of Dealer.
 
-        self.card_instances = []
         self.points = 300
-        self.total_points = 0
         self.is_playing = True
         self.card = Card()
         self.player_guess = ""
+        self.play_again = ""
     
     def start_game(self):
+        # Starts the game by running the main game loop.
+        
+        # Args:
+            # self (Dealer): an instance of Dealer.
 
         while self.is_playing:
             self.guess_card()
-            # self.calculate_score()
-            # self.output_score()
     
     def guess_card(self):
-        # Show card
+        # Show the cards
         # Ask the user to guess if the next card is higher or lower
-        # calculate the show the score
+        # Show the score
+        # Ask if the user wants to play again
+
+        # Args:
+            # self (Dealer): an instance of Dealer.
 
         #Args: self (Dealer): an instance of Dealer
         current_card = self.card.draw_card()
@@ -44,61 +49,42 @@ class Dealer:
         print(f"The card is: {current_card}")
         self.player_guess = input("Higher or lower? [h/l] ")
 
-        if current_card != next_card:
-            print(f"Next card was: {next_card}")
+        print(f"Next card was: {next_card}")
+        self.calculate_points(self.player_guess, current_card, next_card, self.points)
 
-        if (self.player_guess.lower() == "h") and (current_card < next_card):
-            self.points += 100
-            print(f"Your score is: {self.points}")
-        
-        elif (self.player_guess.lower() == "l") and (current_card > next_card):
-            self.points += 100
-            print(f"Your score is: {self.points}")
-        
-        else:
-            self.points -= 75
-            print(f"Your score is: {self.points}")
-        
-        self.player_guess = input("Play again? [y/n] ")
-        self.is_playing = (self.player_guess == "y")
-        print()
-    
-    def calculate_points(self, guess, c_card, n_card, score):
+        if self.points > 0:
+            self.play_again = input("Play again? [y/n] ")
 
-        # This method calculates and updates player's score
-        
-        # Args: self (Dealer): an instance of Dealer
+            if self.play_again.lower() == "y":
+                self.is_playing = True
 
-            if (guess.lower() == "h") and (c_card < n_card):
-                score += 100
-                print(f"Your score is: {score}")
-            
-            elif (guess.lower() == "l") and (c_card > n_card):
-                score += 100
-                print(f"Your score is: {score}")
+            elif self.play_again.lower() == "n":
+                print("Thanks for playing!")
+                self.is_playing = False
             
             else:
-                score -= 75
-                print(f"Your score is: {score}")
-            
-            self.total_points += self.points
-            
-            return self.total_points
+                print('Please, type "y" or "n"')
+        else:
+            print("You lost all your points, game over.")
+            self.is_playing = False
 
-        # self.card.compare_card_number()
-        # self.points += self.card.score
+        print()
+    
+    def calculate_points(self, player_guess, current_card, next_card, points):
+        # Calculate and print the points depending on the player's guess. If the guess is correct,
+        # sum 100 points, but if not, subtract 75 points.
 
-        # for i in range(len(self.card_instances)):
-        #     card = self.card_instances[i]
-        #     self.points += card.points
-        # self.total_points += self.points
-
-    def output_score(self):
-        # This method shows the score, current card, next card, and ask the players if they want to play again.
-
+        
         # Args: self (Dealer): an instance of Dealer
 
-        if not self.is_playing:
-            return
-        # value
-        # print(f"The card is: {generate_card}")
+            if (self.player_guess.lower() == "h") and (current_card < next_card):
+                self.points += 100
+                print(f"Your score is: {self.points}")
+            
+            elif (self.player_guess.lower() == "l") and (current_card > next_card):
+                self.points += 100
+                print(f"Your score is: {self.points}")
+            
+            else:
+                self.points -= 75
+                print(f"Your score is: {self.points}")
